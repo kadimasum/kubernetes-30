@@ -19,11 +19,11 @@ spec:
           image: mongo-express
           resources:
             requests:
-              cpu: 100m
-              memory: 100Mi
+              cpu: 50m
+              memory: 25Mi
             limits:
-              cpu: 100m
-              memory: 100Mi
+              cpu: 50m
+              memory: 25Mi
           ports:
           - containerPort: 8081
           env: 
@@ -42,4 +42,20 @@ spec:
               configMapKeyRef:
                 name: mongodb-configmap
                 key: database_url
+
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: mongo-express-service
+spec:
+  selector:
+    app: mongo-express
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+      nodePort: 30000
+  
         
